@@ -1,0 +1,19 @@
+RewriteEngine On
+
+#.do
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^(.+)\.do$ index.php?page=$1&%1
+RewriteCond %{QUERY_STRING} ^$
+RewriteRule ^(.+)\.do$ index.php?page=$1
+
+# 过滤安全
+RewriteCond %{REQUEST_URI} ^/setting/
+RewriteRule ^ 404.html
+RewriteCond %{REQUEST_URI} ^/class/
+RewriteRule ^ 404.html
+RewriteCond %{REQUEST_URI} ^/storage/
+RewriteRule ^ 404.html
+
+#使用memcache存session
+php_value session.save_handler "memcache"
+php_value session.save_path "tcp://127.0.0.1:11211"
